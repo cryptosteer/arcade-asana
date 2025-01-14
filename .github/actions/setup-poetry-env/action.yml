@@ -21,7 +21,7 @@ runs:
         virtualenvs-in-project: true
 
     - name: Generate poetry.lock
-      run: poetry lock --no-update
+      run: poetry lock
       shell: bash
 
     - name: Load cached venv
