@@ -7,7 +7,7 @@ from arcade.sdk.eval import (
 )
 
 import arcade_asana
-from arcade_asana.tools.hello import say_hello
+from arcade_asana.tools.projects import create_project, get_project_details, list_projects
 
 # Evaluation rubric
 rubric = EvalRubric(
@@ -15,35 +15,50 @@ rubric = EvalRubric(
     warn_threshold=0.95,
 )
 
-
 catalog = ToolCatalog()
 catalog.add_module(arcade_asana)
-
 
 @tool_eval()
 def asana_eval_suite() -> EvalSuite:
     suite = EvalSuite(
-        name="asana Tools Evaluation",
+        name="Asana Projects Tools Evaluation",
         system_message=(
-            "You are an AI assistant with access to asana tools. "
-            "Use them to help the user with their tasks."
+            "You are an AI assistant with access to Asana project management tools. "
+            "Use them to help the user manage their projects."
         ),
         catalog=catalog,
         rubric=rubric,
     )
 
     suite.add_case(
-        name="Saying hello",
-        user_message="He's actually right here, say hi to him!",
-        expected_tool_calls=[(say_hello, {"name": "John Doe"})],
+        name="Creating a project",
+        user_message="Can you create a new project called 'Website Redesign'?",
+        expected_tool_calls=[(create_project, {"name": "Website Redesign"})],
         rubric=rubric,
         critics=[
             SimilarityCritic(critic_field="name", weight=0.5),
         ],
+    )
+
+    suite.add_case(
+        name="Getting project details",
+        user_message="What are the details of the 'Marketing Campaign' project?",
+        expected_tool_calls=[(get_project_details, {"project_id": "123456"})],
+        rubric=rubric,
+        critics=[
+            SimilarityCritic(critic_field="project_id", weight=0.5),
+        ],
         additional_messages=[
-            {"role": "user", "content": "My friend's name is John Doe."},
-            {"role": "assistant", "content": "It is great that you have a friend named John Doe!"},
+            {"role": "user", "content": "The project ID for 'Marketing Campaign' is 123456."},
+            {"role": "assistant", "content": "Certainly! I'll retrieve the details of the 'Marketing Campaign' project for you."},
         ],
     )
 
-    return suite
+    suite.add_case(
+        name="Listing projects",
+        user_message="Can you show me a list of all my current projects?",
+        expected_tool_calls=[(list_projects, {})],
+        rubric=rubric,
+    )
+
+    return suite 

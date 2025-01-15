@@ -5,16 +5,15 @@ An Arcade AI toolkit designed to interact with Asana, enabling users to manage p
 ## Features
 
 - **Project Management**: Easily create, list and access projects
-- **Task Operations**: Create, update, and manage tasks within projects
-- **Task Details**: Retrieve detailed information about tasks
-- **Task Assignment**: Assign or reassign tasks to team members
-- **Task Comments**: Add comments to tasks for better collaboration
 - **Secure OAuth Integration**: Built-in secure authentication flow with Asana's OAuth 2.0
 
 ## Roadmap
 
-- [ ] Add/update task due dates
+- [ ] Create, update, and manage tasks within projects
+- [ ] Retrieve detailed information about tasks
 - [ ] Add/remove task assignees
+- [ ] Add/update task due dates
+- [ ] Add comments to tasks for better collaboration
 - [ ] Implement subtasks management
 - [ ] Integrate with Asana's reporting features
 
@@ -34,6 +33,8 @@ Before getting started, ensure you have:
 2. Click on "Create new app"
 3. Set the redirect URI to: `https://cloud.arcade-ai.com/api/v1/oauth/callback`
 4. Save your client ID and secret
+5. Go to "Manage distribution" section
+6. Choose distribution method "Any workspace" and click on "Save changes"
 
 ### 2. Environment Setup
 
@@ -44,9 +45,11 @@ ASANA_CLIENT_ID=your_client_id
 ASANA_CLIENT_SECRET=your_client_secret
 ```
 
+Add to asana provider to your :
+
 ### 3. OAuth Configuration
 
-Add this configuration to your Arcade engine setup:
+Add this configuration to your Arcade engine setup file `engine.yaml`:
 
 ```yaml
 auth:
@@ -64,13 +67,16 @@ auth:
             response_type: "code"
             client_id: "{{client_id}}"
             redirect_uri: "{{redirect_uri}}"
+            scope: "default"
         token_request:
           endpoint: "https://app.asana.com/-/oauth_token"
           params:
             grant_type: "authorization_code"
             redirect_uri: "{{redirect_uri}}"
-          auth_method: "client_secret_post"
+          auth_method: "client_secret_basic"
 ```
+
+You can find detailed instructions on locating and configuring the engine file at: `https://docs.arcade-ai.com/home/install/local#engine-config-not-found`.
 
 ## Usage Examples
 
@@ -78,47 +84,11 @@ auth:
 
 ```plaintext
 # Create a new project
-"Create a new project called 'Website Redesign' in the 'Marketing' workspace"
+"Please create a new project in Asana titled 'Website Redesign' in the Default Workspace with dark blue as the theme color, and add 'Complete website redesign project' as the project description."
 
 # List accessible projects
 "Show me all the projects I have access to"
 
 # Get project details
 "What are the details of the project called 'Website Redesign'?"
-```
-
-### Task Operations
-
-```plaintext
-# Create a new task
-"Create a new task called 'Design homepage mockup' in the 'Website Redesign' project, due next Monday"
-
-# Create a new task
-"Create a new task called 'Review design mockups' in the 'Website Redesign' project, due next Friday"
-
-# Update task status
-"Mark the task 'Design homepage mockup' as complete"
-
-# List tasks
-"Show me all incomplete tasks in the 'Marketing Campaign' project"
-```
-
-### Task Assignment
-
-```plaintext
-# Assign a task
-"Assign the task 'Create social media posts' to John Doe"
-
-# Change task assignee
-"Reassign the 'Write blog post' task from Jane Smith to Mike Johnson"
-```
-
-### Task Comments
-
-```plaintext
-# Add a comment
-"Add a comment to the 'Prepare presentation' task: 'First draft is ready for review'"
-
-# Retrieve task comments
-"Show me all comments on the 'Client meeting preparation' task"
 ```
