@@ -33,10 +33,6 @@ def create_project_api(token: str, project_data: Dict[str, Any]) -> Dict[str, An
 
     try:
         response = requests.post(url, json={"data": project_data}, headers=headers)
-        print("--- project_data ---")
-        print(project_data)
-        print("--- response ---")
-        print(response.json())
         response.raise_for_status()
         return {"error": None, "data": response.json()}
     except requests.RequestException as e:

@@ -32,7 +32,7 @@ def asana_eval_suite() -> EvalSuite:
 
     suite.add_case(
         name="Creating a project",
-        user_message="Can you create a new project called 'Website Redesign'?",
+        user_message="Can you create a new project called 'Website Redesign' in the workspace with gid '123'?",
         expected_tool_calls=[(create_project, {"name": "Website Redesign"})],
         rubric=rubric,
         critics=[
