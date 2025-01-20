@@ -76,7 +76,7 @@ auth:
           auth_method: "client_secret_basic"
 ```
 
-You can find detailed instructions on locating and configuring the engine file at: `https://docs.arcade-ai.com/home/install/local#engine-config-not-found`.
+You can find detailed instructions on locating and configuring the engine file at: [Install engine locally](https://docs.arcade-ai.com/home/install/local#engine-config-not-found).
 
 ## Usage Examples
 
